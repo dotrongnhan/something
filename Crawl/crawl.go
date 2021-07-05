@@ -1,14 +1,12 @@
 package crawler
 
 import (
-"database/sql"
+	"database/sql"
 	"example.com/hello/model"
 	"fmt"
-"log"
-"strconv"
-"strings"
-
-"github.com/gocolly/colly"
+	"github.com/gocolly/colly"
+	"log"
+	"strconv"
 )
 
 func Crawler(db *sql.DB) {
@@ -33,13 +31,12 @@ func Crawler(db *sql.DB) {
 		//Bóc tách dữ liệu từ HTML lấy được
 		data := model.Film{}
 		data.Title = e.ChildText(".titleColumn a")
-		year := e.ChildText(".titleColumn span")
-		year1 := strings.ReplaceAll(year, "(", "")
-		year2, _ := strconv.Atoi(strings.ReplaceAll(year1, ")", ""))
+		yearElement := e.ChildText(".titleColumn span")
+		year, _ := strconv.Atoi(yearElement[1 : len(yearElement)-1])
 		//Tìm đến thẻ con h2 và lấy nội dung
-		data.Year = year2
+		data.Year = year
 		//tìm đến thẻ con cite và lấy nội dung
-		data.Rating, _ = strconv.ParseFloat(e.ChildText(".ratingColumn strong"), 64)
+		data.Rating, _ = strconv.ParseFloat(e.ChildText(".ratingColumn strong"), 32)
 		//Tìm đến thẻ con p và lấy nội dung
 		data.Link = e.ChildAttr("a", "href")
 		fmt.Printf("- Title: %s- Year: %d- Rating: %f- Link: %s", data.Title, data.Year, data.Rating, data.Link)
@@ -53,7 +50,8 @@ func Crawler(db *sql.DB) {
 		checkErr(err)
 		//Handle error
 
-		lastId, err := res.LastInsertId() //Lấy ra ID vừa được insert
+		lastId, err := res.LastInsertId()
+		//Lấy ra ID vừa được insert
 
 		if err != nil {
 			log.Fatal(err)
@@ -61,7 +59,8 @@ func Crawler(db *sql.DB) {
 		fmt.Printf("=&gt;Insert ID: %dnn", lastId)
 	})
 
-	c.OnScraped(func(r *colly.Response) { //Hoàn thành job craw
+	c.OnScraped(func(r *colly.Response) {
+		//Hoàn thành job craw
 		fmt.Println("Finished", r.Request.URL)
 	})
 

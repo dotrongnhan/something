@@ -1,10 +1,13 @@
 package main
 
-import "fmt"
+import (
+	"example.com/hello/sort"
+	"fmt"
+)
 
 func main() {
 
-	//fmt.Println(sort.QuickSort([]int{1,4,2,3}))
+	fmt.Println(sort.QuickSort([]int{1, 2, 3, 4, 5}))
 	//db, err := database.Connection()
 	//if err != nil {
 	//	//Catch error trong quá trình thực thi
@@ -15,13 +18,4 @@ func main() {
 	//log.Printf("Successfully connected to database")
 	//
 	//crawler.Crawler(db)
-}
-
-
-func hello(name string) string {
-	if name == "" {
-		return fmt.Sprintf("What is your name ?")
-	} else {
-		return fmt.Sprintf("Hello %s", name)
-	}
 }
