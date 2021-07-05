@@ -1,5 +1,7 @@
 package sort
 
+import "math/rand"
+
 //BubbleSort
 
 func BubbleSort(array []int) []int {
@@ -15,30 +17,29 @@ func BubbleSort(array []int) []int {
 
 //quickSort
 
-func partition(arr []int, low, high int) int {
-
-	p := arr[high]
-
-	for j := low; j < high; j++ {
-		if arr[j] < p {
-			arr[j], arr[low] = arr[low], arr[j]
-			low++
-		}
-	}
-
-	arr[low], arr[high] = arr[high], arr[low]
-	return low
-}
-
-func quickSort(arr []int, low, high int) []int {
-
-	if low > high {
+func QuickSort(arr []int) []int {
+	if len(arr) < 2 {
 		return arr
 	}
 
-	p := partition(arr, low, high)
-	quickSort(arr, low, p-1)
-	quickSort(arr, p+1, high)
+	left, right := 0, len(arr)-1
+
+	pivot := rand.Int() % len(arr)
+
+	arr[pivot], arr[right] = arr[right], arr[pivot]
+
+	for i := range arr {
+		if arr[i] < arr[right] {
+			arr[left], arr[i] = arr[i], arr[left]
+			left++
+		}
+	}
+
+	arr[left], arr[right] = arr[right], arr[left]
+
+	QuickSort(arr[:left])
+	QuickSort(arr[left+1:])
+
 	return arr
 }
 

@@ -1,7 +1,7 @@
 package server
 
 import (
-	"example.com/hello/controller"
+	"example.com/hello/math"
 	"fmt"
 	"net/http"
 )
@@ -12,13 +12,13 @@ func RunServer() {
 		fmt.Println("Server is stopped")
 	}()
 
-	http.HandleFunc("/sum", controller.Sum)
+	http.HandleFunc("/sum", math.Sum)
 
-	http.HandleFunc("/minus", controller.Minus)
+	http.HandleFunc("/minus", math.Minus)
 
-	http.HandleFunc("/multi", controller.Multi)
+	http.HandleFunc("/multi", math.Multi)
 
-	http.HandleFunc("/div", controller.Div)
+	http.HandleFunc("/div", math.Div)
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		panic("Error when running server")
